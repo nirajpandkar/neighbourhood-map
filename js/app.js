@@ -104,7 +104,6 @@ function fillInfoWindow(marker, infoWindow){
 
 var ViewModel = function(){
     var self = this;
-    self.markersArray = ko.observableArray(places);
 
     self.searchString = ko.observable();
     self.searchResults = ko.computed(function() {
