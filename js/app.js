@@ -136,7 +136,7 @@ function FourSquareAPI(place){
         error: function(e) {
             self.error_message("Couldn't retrieve data. Try again later!");
         }
-    })
+    });
 
 
 }
