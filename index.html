@@ -36,7 +36,7 @@
                     <hr>
 
                     <ul class="list-group" data-bind="foreach: searchResults">
-                        <li class="list-group-item" id="list_items"><a href="#" data-toggle="modal" data-target="#myModal" data-bind="text: title, click: showInfo"></a></li>
+                        <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#myModal" data-bind="text: title, click: showInfo"></a></li>
                     </ul>
                 </div>
             </div>
@@ -81,7 +81,7 @@
 
 <script src="js/model.js"></script>
 <script src="js/app.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAtpMgORRmlABZzXwECnGa8nqW_xV2BwPk&v=3&callback=initMap"></script>
+<script async defer onerror="mapsError()" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAtpMgORRmlABZzXwECnGa8nqW_xV2BwPk&v=3&callback=initMap"></script>
 <script>
     $( document ).ready(function() {
 
@@ -97,7 +97,7 @@
             $('.overlay').hide();
         });
 
-        $('#list_items').on('click', function(){
+        $('.list-group-item').on('click', function(){
             $('#navbarSide').removeClass('reveal');
             $('.overlay').hide();
         })
