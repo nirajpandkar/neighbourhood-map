@@ -115,8 +115,8 @@ function FourSquareAPI(place){
     $.ajax({
         url: foursquare_url,
         dataType: "json",
-        async: true,
-        success: function(data){
+        async: true})
+        .done(function(data){
             var contact_number = data.response.groups[0].items[0].venue.contact.formattedPhone;
             var rating = data.response.groups[0].items[0].venue.rating;
             self.item_name(place.title);
@@ -128,12 +128,10 @@ function FourSquareAPI(place){
 
             if(contact_number) self.contact(contact_number);
             else self.contact("N/A");
-        },
-        error: function(e) {
+        })
+        .fail(function() {
             self.error_message("Couldn't retrieve data. Try again later!");
-        }
-    })
-
+        });
 
 }
 
