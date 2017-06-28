@@ -19,9 +19,6 @@ function initMap(){
     }
 
     map.fitBounds(bounds);
-
-
-
 }
 
 // Create an array of markers using places array.
@@ -50,22 +47,12 @@ var addMarker = function(place){
     });
 };
 
-// not required to be removed
-document.getElementById('show-listing').addEventListener('click', showMarkers);
-document.getElementById('hide-listing').addEventListener('click', function(){
-    hideMarkers(markers);
-});
-
-
+// Hide and the show the markers as and when required
 function showMarkers(){
     for(var i=0; i<markers.length; i++){
-
-
         markers[i].setMap(map);
         bounds.extend(markers[i].position);
-
     }
-    //map.fitBounds(bounds);
 }
 
 function hideMarkers(markers){
@@ -74,6 +61,7 @@ function hideMarkers(markers){
     }
 }
 
+// Bounce the marker when clicked
 function toggleBounce(marker) {
 
     for(var i=0;i<markers.length;i++){
@@ -106,6 +94,8 @@ var ViewModel = function(){
     var self = this;
 
     self.searchString = ko.observable();
+
+    // Filter functionality
     self.searchResults = ko.computed(function() {
         var string = self.searchString();
         if(string == null){
