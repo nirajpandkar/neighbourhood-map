@@ -113,7 +113,7 @@ var ViewModel = function(){
         }
     });
 
-
+    initMap();
 };
 
 
