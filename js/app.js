@@ -44,6 +44,7 @@ var addMarker = function(place){
     marker.addListener('click', function() {
         fillInfoWindow(this, infoWindow);
         toggleBounce(this);
+        FourSquareAPI(place);
     });
 };
 
@@ -61,7 +62,7 @@ function hideMarkers(markers){
     }
 }
 
-// Bounce the marker when clicked
+// Bounce the marker when clicked or when referenced
 function toggleBounce(marker) {
 
     for(var i=0;i<markers.length;i++){
@@ -78,7 +79,7 @@ function toggleBounce(marker) {
 function fillInfoWindow(marker, infoWindow){
     if(infoWindow.marker != marker){
         infoWindow.marker = marker;
-        infoWindow.setContent('<div>' + marker.title + '</div>');
+        infoWindow.setContent('<div>' + marker.title + '<br><a href="#" data-toggle="modal" data-target="#myModal" data-bind="click: showInfo">More Info..</a></div>');
         infoWindow.open(map, marker);
 
         // Marker property cleared if window closed
@@ -169,7 +170,13 @@ var ViewModel = function(){
     // Show modal when clicked
     self.showInfo = function(place){
         FourSquareAPI(place);
-        toggleBounce()
+
+        for(var i=0;i<markers.length;i++){
+            if(markers[i].title == place.title){
+                toggleBounce(markers[i]);
+            }
+        }
+
     };
 
 
