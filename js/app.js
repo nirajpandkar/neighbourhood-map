@@ -15,9 +15,9 @@ function initMap(){
     infoWindow = new google.maps.InfoWindow();
     bounds = new google.maps.LatLngBounds();
 
-    for(var i=0;i<places.length;i++){
-        addMarker(places[i]);
-    }
+    places.forEach(function(place){
+        addMarker(place);
+    });
 
     map.fitBounds(bounds);
 }
@@ -51,29 +51,27 @@ var addMarker = function(place){
 
 // Hide and the show the markers as and when required
 function showMarkers(){
-    for(var i=0; i<markers.length; i++){
-        markers[i].setMap(map);
-        bounds.extend(markers[i].position);
-    }
+    markers.forEach(function(marker){
+        marker.setVisible(true);
+        bounds.extend(marker.position);
+    });
 }
 
-function hideMarkers(markers){
-    for(var i=0; i<markers.length; i++){
-        markers[i].setMap(null);
-    }
+function hideMarkers(){
+    markers.forEach(function(marker){
+        marker.setVisible(false);
+    });
 }
 
 // Bounce the marker when clicked or when referenced
 function toggleBounce(marker) {
+    markers.forEach(function(marker){
+        marker.setAnimation(null);
+    });
 
-    for(var i=0;i<markers.length;i++){
-        markers[i].setAnimation(null);
-    }
     if(marker){
         marker.setAnimation(google.maps.Animation.BOUNCE);
     }
-
-
 }
 
 // populate the infowindow with appropriate information
@@ -92,8 +90,8 @@ function fillInfoWindow(marker, infoWindow){
 }
 
 function FourSquareAPI(place){
-    var client_id = "GJXKB1TLL4RNYI2R3WMTGCGNZR2XYJDD3H4R2TAAMCER3S43";
-    var client_secret = "Q4TNZRLJYH5CKCZIUWUNH5XYK0UUG3WLRRQXWCK2JF5SDMRL";
+    var client_id = credentials.client_id;
+    var client_secret = credentials.client_secret;
 
     var date = new Date();
 
@@ -118,27 +116,30 @@ function FourSquareAPI(place){
     $.ajax({
         url: foursquare_url,
         dataType: "json",
-        async: true,
-        success: function(data){
+        async: true})
+        .done(function(data){
             var res = data.response.groups[0].items[0].venue;
             var contact_number = res.contact.formattedPhone;
             var rating = res.rating;
+
             self.item_name(place.title);
             self.url(res.url);
             self.categories(res.categories[0].pluralName);
 
-            if(rating) self.rating(rating);
-            else self.rating("N/A");
+            self.rating(rating || "N/A");
 
-            if(contact_number) self.contact(contact_number);
-            else self.contact("N/A");
-        },
-        error: function(e) {
+            self.contact(contact_number || "N/A");
+        })
+        .fail(function() {
             self.error_message("Couldn't retrieve data. Try again later!");
-        }
-    });
+        });
 
+}
 
+// Display error message if Google Maps fail to load for some reason
+function mapsError(){
+    self.error_message("Couldn't load Google Maps. Try again later!");
+    alert(self.error_message());
 }
 
 var ViewModel = function(){
@@ -161,7 +162,7 @@ var ViewModel = function(){
             return places;
         }
         else{
-            hideMarkers(markers);
+            hideMarkers();
             return ko.utils.arrayFilter(places, function(place) {
                 if(place.title.toLowerCase().indexOf(string.toLowerCase()) >= 0) {
                     addMarker(place);
@@ -175,11 +176,11 @@ var ViewModel = function(){
     self.showInfo = function(place){
         FourSquareAPI(place);
 
-        for(var i=0;i<markers.length;i++){
-            if(markers[i].title == place.title){
-                toggleBounce(markers[i]);
+        markers.forEach(function(marker){
+            if(marker.title == place.title){
+                toggleBounce(marker);
             }
-        }
+        });
 
     };
 };
