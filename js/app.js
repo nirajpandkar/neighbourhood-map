@@ -14,9 +14,9 @@ function initMap(){
     infoWindow = new google.maps.InfoWindow();
     bounds = new google.maps.LatLngBounds();
 
-    for(var i=0;i<places.length;i++){
-        addMarker(places[i]);
-    }
+    places.forEach(function(place){
+        addMarker(place);
+    });
 
     map.fitBounds(bounds);
 }
@@ -50,29 +50,27 @@ var addMarker = function(place){
 
 // Hide and the show the markers as and when required
 function showMarkers(){
-    for(var i=0; i<markers.length; i++){
-        markers[i].setVisible(true);
-        bounds.extend(markers[i].position);
-    }
+    markers.forEach(function(marker){
+        marker.setVisible(true);
+        bounds.extend(marker.position);
+    });
 }
 
-function hideMarkers(markers){
-    for(var i=0; i<markers.length; i++){
-        markers[i].setVisible(false);
-    }
+function hideMarkers(){
+    markers.forEach(function(marker){
+        marker.setVisible(false);
+    });
 }
 
 // Bounce the marker when clicked or when referenced
 function toggleBounce(marker) {
+    markers.forEach(function(marker){
+        marker.setAnimation(null);
+    });
 
-    for(var i=0;i<markers.length;i++){
-        markers[i].setAnimation(null);
-    }
     if(marker){
         marker.setAnimation(google.maps.Animation.BOUNCE);
     }
-
-
 }
 
 // populate the infowindow with appropriate information
@@ -164,7 +162,7 @@ var ViewModel = function(){
             return places;
         }
         else{
-            hideMarkers(markers);
+            hideMarkers();
             return ko.utils.arrayFilter(places, function(place) {
                 if(place.title.toLowerCase().indexOf(string.toLowerCase()) >= 0) {
                     addMarker(place);
@@ -178,11 +176,11 @@ var ViewModel = function(){
     self.showInfo = function(place){
         FourSquareAPI(place);
 
-        for(var i=0;i<markers.length;i++){
-            if(markers[i].title == place.title){
-                toggleBounce(markers[i]);
+        markers.forEach(function(marker){
+            if(marker.title == place.title){
+                toggleBounce(marker);
             }
-        }
+        });
 
     };
 
