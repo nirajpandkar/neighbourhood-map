@@ -21,18 +21,18 @@ var places = [
         }
     },
     {
-        title: "WoodFire Grill",
+        title: "Four Seasons",
         location: {
-            lat: 18.512104,
-            lng: 73.814756
-        }
-    },
-    {
-        title: "Papa Johns",
-        location: {
-            lat: 18.5042127,
-            lng: 73.8210666
+            lat: 18.503636050196736,
+            lng: 73.82144475083378
         }
 
+    },
+    {
+        title: "Subway",
+        location: {
+            lat: 18.501892360330697,
+            lng: 73.82187554295808
+        }
     }
 ];

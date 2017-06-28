@@ -89,12 +89,65 @@ function fillInfoWindow(marker, infoWindow){
 
 }
 
+function FourSquareAPI(place){
+    var client_id = "GJXKB1TLL4RNYI2R3WMTGCGNZR2XYJDD3H4R2TAAMCER3S43";
+    var client_secret = "Q4TNZRLJYH5CKCZIUWUNH5XYK0UUG3WLRRQXWCK2JF5SDMRL";
+
+    var date = new Date();
+
+    var year = date.getFullYear();
+
+    //Index of the month starts from 0
+    var month = date.getMonth()+1;
+    //Also formatted to be two-digit number
+    if(month<10) month = "0" + month;
+
+    var day = date.getDate();
+    //Formatted to be two-digit if not
+    if(day<10) day = "0" + day;
+
+    //For latest version
+    var v = year + "" + month + "" + day;
+
+    var foursquare_url = "https://api.foursquare.com/v2/venues/explore?ll=" + place.location.lat + "," +
+        place.location.lng + "&client_id=" + client_id + "&client_secret=" + client_secret +
+        "&query=" + place.title + "&v=" + v;
+
+    $.ajax({
+        url: foursquare_url,
+        dataType: "json",
+        async: true,
+        success: function(data){
+            var contact_number = data.response.groups[0].items[0].venue.contact.formattedPhone;
+            var rating = data.response.groups[0].items[0].venue.rating;
+
+            self.item_name(place.title);
+            self.url(data.response.groups[0].items[0].venue.url);
+            self.address(data.response.groups[0].items[0].venue.location.formattedAddress[0]);
+            self.categories(data.response.groups[0].items[0].venue.categories[0].pluralName);
+
+            if(rating) self.rating(rating);
+            else self.rating("N/A");
+
+            if(contact_number) self.contact(contact_number);
+            else self.contact("N/A");
+        }
+    })
+
+
+}
 
 var ViewModel = function(){
     var self = this;
 
     self.searchString = ko.observable();
-
+    self.item_name = ko.observable();
+    self.url = ko.observable();
+    self.rating = ko.observable();
+    self.address = ko.observable();
+    self.status_hours = ko.observable();
+    self.contact = ko.observable();
+    self.categories = ko.observable();
     // Filter functionality
     self.searchResults = ko.computed(function() {
         var string = self.searchString();
@@ -113,7 +166,14 @@ var ViewModel = function(){
         }
     });
 
-    initMap();
+    // Show modal when clicked
+    self.showInfo = function(place){
+        FourSquareAPI(place);
+        toggleBounce()
+    };
+
+
+    //initMap();
 };
 
 
