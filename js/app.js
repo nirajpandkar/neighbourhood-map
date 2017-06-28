@@ -3,6 +3,7 @@ var marker;
 var map;
 var bounds;
 var infoWindow;
+
 function initMap(){
     map = new google.maps.Map(document.getElementById('map'),{
         center: {lat: 18.5028327, lng: 73.8200166},
@@ -119,11 +120,12 @@ function FourSquareAPI(place){
         dataType: "json",
         async: true,
         success: function(data){
-            var contact_number = data.response.groups[0].items[0].venue.contact.formattedPhone;
-            var rating = data.response.groups[0].items[0].venue.rating;
+            var res = data.response.groups[0].items[0].venue;
+            var contact_number = res.contact.formattedPhone;
+            var rating = res.rating;
             self.item_name(place.title);
-            self.url(data.response.groups[0].items[0].venue.url);
-            self.categories(data.response.groups[0].items[0].venue.categories[0].pluralName);
+            self.url(res.url);
+            self.categories(res.categories[0].pluralName);
 
             if(rating) self.rating(rating);
             else self.rating("N/A");
@@ -150,10 +152,11 @@ var ViewModel = function(){
     self.contact = ko.observable();
     self.categories = ko.observable();
     self.error_message = ko.observable();
+
     // Filter functionality
     self.searchResults = ko.computed(function() {
         var string = self.searchString();
-        if(string == null){
+        if(!string){
             showMarkers();
             return places;
         }
@@ -179,9 +182,6 @@ var ViewModel = function(){
         }
 
     };
-
-
-    //initMap();
 };
 
 
