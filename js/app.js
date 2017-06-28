@@ -139,6 +139,12 @@ function FourSquareAPI(place){
 
 }
 
+// Display error message if Google Maps fail to load for some reason
+function mapsError(){
+    self.error_message("Couldn't load Google Maps. Try again later!");
+    alert(self.error_message());
+}
+
 var ViewModel = function(){
     var self = this;
 
