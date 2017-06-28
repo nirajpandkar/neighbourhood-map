@@ -35,14 +35,16 @@ var addMarker = function(place){
         icon: "images/map-marker_36.png"
     });
 
+    place.marker = marker;
+
     // Push marker into markers array
-    markers.push(marker);
-    //self.markersArray().push([marker]);
+    markers.push(place.marker);
+
     // Extend the map boundaries to encompass all the markers
-    bounds.extend(marker.position);
+    bounds.extend(place.marker.position);
 
     // Onclick event listener to open infoWindow at each marker.
-    marker.addListener('click', function() {
+    place.marker.addListener('click', function() {
         fillInfoWindow(this, infoWindow);
         toggleBounce(this);
         FourSquareAPI(place);
@@ -51,6 +53,10 @@ var addMarker = function(place){
 
 // Hide and the show the markers as and when required
 function showMarkers(){
+    //places.forEach(function(place){
+    //    place.marker.setVisible(true);
+    //    bounds.extend(place.marker.position);
+    //});
     markers.forEach(function(marker){
         marker.setVisible(true);
         bounds.extend(marker.position);
@@ -58,8 +64,8 @@ function showMarkers(){
 }
 
 function hideMarkers(){
-    markers.forEach(function(marker){
-        marker.setVisible(false);
+    places.forEach(function(place){
+        place.marker.setVisible(false);
     });
 }
 
@@ -165,7 +171,7 @@ var ViewModel = function(){
             hideMarkers();
             return ko.utils.arrayFilter(places, function(place) {
                 if(place.title.toLowerCase().indexOf(string.toLowerCase()) >= 0) {
-                    addMarker(place);
+                    place.marker.setVisible(true);
                     return place;
                 }
             });
@@ -175,12 +181,7 @@ var ViewModel = function(){
     // Show modal when clicked
     self.showInfo = function(place){
         FourSquareAPI(place);
-
-        markers.forEach(function(marker){
-            if(marker.title == place.title){
-                toggleBounce(marker);
-            }
-        });
+        toggleBounce(place.marker);
 
     };
 };
