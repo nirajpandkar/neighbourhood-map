@@ -14,9 +14,9 @@ function initMap(){
     infoWindow = new google.maps.InfoWindow();
     bounds = new google.maps.LatLngBounds();
 
-    for(var i=0;i<places.length;i++){
-        addMarker(places[i]);
-    }
+    places.forEach(function(place){
+        addMarker(place);
+    });
 
     map.fitBounds(bounds);
 }
@@ -34,14 +34,15 @@ var addMarker = function(place){
         icon: "images/map-marker_36.png"
     });
 
+    place.marker = marker;
     // Push marker into markers array
-    markers.push(marker);
+    markers.push(place.marker);
     //self.markersArray().push([marker]);
     // Extend the map boundaries to encompass all the markers
-    bounds.extend(marker.position);
+    bounds.extend(place.marker.position);
 
     // Onclick event listener to open infoWindow at each marker.
-    marker.addListener('click', function() {
+    place.marker.addListener('click', function() {
         fillInfoWindow(this, infoWindow);
         toggleBounce(this);
         FourSquareAPI(place);
@@ -50,29 +51,35 @@ var addMarker = function(place){
 
 // Hide and the show the markers as and when required
 function showMarkers(){
-    for(var i=0; i<markers.length; i++){
-        markers[i].setMap(map);
-        bounds.extend(markers[i].position);
-    }
+    places.forEach(function(place){
+        place.marker.setVisible(true);
+        bounds.extend(place.marker.position);
+    });
+
+    //markers.forEach(function(marker){
+    //    marker.setMap(map);
+    //    bounds.extend(marker.position);
+    //});
 }
 
-function hideMarkers(markers){
-    for(var i=0; i<markers.length; i++){
-        markers[i].setMap(null);
-    }
+function hideMarkers(){
+    places.forEach(function(place){
+        place.marker.setVisible(false);
+    });
+    //markers.forEach(function(marker){
+    //    marker.setMap(null);
+    //});
 }
 
 // Bounce the marker when clicked or when referenced
 function toggleBounce(marker) {
+    markers.forEach(function(marker){
+        marker.setAnimation(null);
+    });
 
-    for(var i=0;i<markers.length;i++){
-        markers[i].setAnimation(null);
-    }
     if(marker){
         marker.setAnimation(google.maps.Animation.BOUNCE);
     }
-
-
 }
 
 // populate the infowindow with appropriate information
@@ -164,7 +171,7 @@ var ViewModel = function(){
             return places;
         }
         else{
-            hideMarkers(markers);
+            hideMarkers();
             return ko.utils.arrayFilter(places, function(place) {
                 if(place.title.toLowerCase().indexOf(string.toLowerCase()) >= 0) {
                     addMarker(place);
@@ -178,11 +185,11 @@ var ViewModel = function(){
     self.showInfo = function(place){
         FourSquareAPI(place);
 
-        for(var i=0;i<markers.length;i++){
-            if(markers[i].title == place.title){
-                toggleBounce(markers[i]);
+        markers.forEach(function(marker){
+            if(marker.title == place.title){
+                toggleBounce(marker);
             }
-        }
+        });
 
     };
 
