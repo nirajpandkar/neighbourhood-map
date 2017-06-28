@@ -35,7 +35,7 @@
                     <hr>
 
                     <ul class="list-group" data-bind="foreach: searchResults">
-                        <li class="list-group-item" ><a href="#" data-toggle="modal" data-target="#myModal" data-bind="text: title, click: showInfo"></a></li>
+                        <li class="list-group-item" id="list_items"><a href="#" data-toggle="modal" data-target="#myModal" data-bind="text: title, click: showInfo"></a></li>
                     </ul>
                 </div>
             </div>
@@ -44,28 +44,11 @@
     <div class="overlay"></div>
 </nav>
 
+
+
 <div class="container">
     <div class="row">
-
-        <!--<div class="col-md-3 my-5 side-bar">-->
-            <!--<div class="card">-->
-                <!--<div class="card-block text-center">-->
-
-                    <!--<div class="input-group my-2">-->
-                        <!--<input id="filter-input" data-bind="textInput: searchString" type="text" class="form-control" placeholder="Filter...">-->
-                    <!--</div>-->
-                    <!--<p id="test"></p>-->
-                    <!--<hr>-->
-
-                    <!--<ul class="list-group" data-bind="foreach: searchResults">-->
-                        <!--<li class="list-group-item" ><a href="#" data-toggle="modal" data-target="#myModal" data-bind="text: title, click: showInfo"></a></li>-->
-                    <!--</ul>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-
         <div class="col-md-12" id="map">
-
         </div>
     </div>
 </div>
@@ -112,6 +95,11 @@
             $('#navbarSide').removeClass('reveal');
             $('.overlay').hide();
         });
+
+        $('#list_items').on('click', function(){
+            $('#navbarSide').removeClass('reveal');
+            $('.overlay').hide();
+        })
 
     });
 </script>

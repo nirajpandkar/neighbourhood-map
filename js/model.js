@@ -7,7 +7,7 @@ var places = [
         }
     },
     {
-        title: "CreamStone",
+        title: "Cream Stone",
         location: {
             lat: 18.5027377,
             lng: 73.821269

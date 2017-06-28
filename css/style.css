@@ -22,7 +22,6 @@ html, body, .container, .row, .col-md-12{
 
 .navbar-side {
     height: 100%;
-    width: 35%;
     position: fixed;
     top: 0;
     right: 0;
@@ -32,12 +31,24 @@ html, body, .container, .row, .col-md-12{
     background-color: #f7f7f9;
     overflow-y: scroll;
     z-index: 1000;
-
-    @include media-breakpoint-up(xs) { width: 85%; }
-    @include media-breakpoint-up(sm) { width: 50%; }
-    @include media-breakpoint-up(md) { width: 25%; }
+}
+@media only screen and (max-width: 420px) {
+    .navbar-side{
+        width: 60%;
+    }
 }
 
+@media only screen and (min-width: 420px) and (max-width: 890px){
+    .navbar-side{
+        width: 35%;
+    }
+}
+
+@media only screen and (mi-width: 890px) {
+    .navbar-side{
+        width: 25%;
+    }
+}
 .navbar-side-item {
     padding: 1.5rem 0;
     margin: 0;
