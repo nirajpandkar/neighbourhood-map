@@ -13,10 +13,18 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="row">
+<nav class="navbar navbar-light navbar-static bg-faded" role="navigation">
+    <!--<a class="navbar-brand" href="#">Eateries</a>-->
+    <ul class="nav navbar-nav">
+        <button class="navbar-toggler float-md-right" id="navbarSideButton" type="button">
+            &#9776;
+        </button>
 
-        <div class="col-md-3 my-5 side-bar">
+    </ul>
+
+    <!-- navbar side -->
+    <ul class="navbar-side" id="navbarSide">
+        <li class="navbar-side-item">
             <div class="card">
                 <div class="card-block text-center">
 
@@ -31,7 +39,30 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </li>
+    </ul>
+    <div class="overlay"></div>
+</nav>
+
+<div class="container">
+    <div class="row">
+
+        <!--<div class="col-md-3 my-5 side-bar">-->
+            <!--<div class="card">-->
+                <!--<div class="card-block text-center">-->
+
+                    <!--<div class="input-group my-2">-->
+                        <!--<input id="filter-input" data-bind="textInput: searchString" type="text" class="form-control" placeholder="Filter...">-->
+                    <!--</div>-->
+                    <!--<p id="test"></p>-->
+                    <!--<hr>-->
+
+                    <!--<ul class="list-group" data-bind="foreach: searchResults">-->
+                        <!--<li class="list-group-item" ><a href="#" data-toggle="modal" data-target="#myModal" data-bind="text: title, click: showInfo"></a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div class="col-md-12" id="map">
 
@@ -52,10 +83,9 @@
             </div>
             <div class="modal-body">
                 <b>Category</b>:<p data-bind="text: categories"></p>
-                <b>Address</b>:<p data-bind="text: address"></p>
                 <b>Rating</b>:<p data-bind="text: rating"></p>
                 <b>Contact</b>:<p data-bind="text: contact"></p>
-
+                <p style="color:red" data-bind="text: error_message"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -69,9 +99,20 @@
 <script src="js/app.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAtpMgORRmlABZzXwECnGa8nqW_xV2BwPk&v=3&callback=initMap"></script>
 <script>
-    $('img').click(function(){
-        $('a').removeClass('li-active');
-        $(this).addClass('li-active');
+    $( document ).ready(function() {
+
+        // Open navbarSide when button is clicked
+        $('#navbarSideButton').on('click', function() {
+            $('#navbarSide').addClass('reveal');
+            $('.overlay').show();
+        });
+
+        // Close navbarSide when the outside of menu is clicked
+        $('.overlay').on('click', function(){
+            $('#navbarSide').removeClass('reveal');
+            $('.overlay').hide();
+        });
+
     });
 </script>
 </body>

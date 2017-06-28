@@ -121,10 +121,8 @@ function FourSquareAPI(place){
         success: function(data){
             var contact_number = data.response.groups[0].items[0].venue.contact.formattedPhone;
             var rating = data.response.groups[0].items[0].venue.rating;
-
             self.item_name(place.title);
             self.url(data.response.groups[0].items[0].venue.url);
-            self.address(data.response.groups[0].items[0].venue.location.formattedAddress[0]);
             self.categories(data.response.groups[0].items[0].venue.categories[0].pluralName);
 
             if(rating) self.rating(rating);
@@ -132,6 +130,9 @@ function FourSquareAPI(place){
 
             if(contact_number) self.contact(contact_number);
             else self.contact("N/A");
+        },
+        error: function(e) {
+            self.error_message("Couldn't retrieve data. Try again later!");
         }
     })
 
@@ -145,10 +146,10 @@ var ViewModel = function(){
     self.item_name = ko.observable();
     self.url = ko.observable();
     self.rating = ko.observable();
-    self.address = ko.observable();
     self.status_hours = ko.observable();
     self.contact = ko.observable();
     self.categories = ko.observable();
+    self.error_message = ko.observable();
     // Filter functionality
     self.searchResults = ko.computed(function() {
         var string = self.searchString();
@@ -182,6 +183,7 @@ var ViewModel = function(){
 
     //initMap();
 };
+
 
 
 ko.applyBindings(ViewModel);
