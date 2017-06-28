@@ -123,11 +123,9 @@ function FourSquareAPI(place){
             self.url(data.response.groups[0].items[0].venue.url);
             self.categories(data.response.groups[0].items[0].venue.categories[0].pluralName);
 
-            if(rating) self.rating(rating);
-            else self.rating("N/A");
+            self.rating(rating || "N/A");
 
-            if(contact_number) self.contact(contact_number);
-            else self.contact("N/A");
+            self.contact(contact_number || "N/A");
         })
         .fail(function() {
             self.error_message("Couldn't retrieve data. Try again later!");
