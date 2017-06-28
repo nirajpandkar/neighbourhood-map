@@ -51,14 +51,14 @@ var addMarker = function(place){
 // Hide and the show the markers as and when required
 function showMarkers(){
     for(var i=0; i<markers.length; i++){
-        markers[i].setMap(map);
+        markers[i].setVisible(true);
         bounds.extend(markers[i].position);
     }
 }
 
 function hideMarkers(markers){
     for(var i=0; i<markers.length; i++){
-        markers[i].setMap(null);
+        markers[i].setVisible(false);
     }
 }
 
@@ -91,8 +91,8 @@ function fillInfoWindow(marker, infoWindow){
 }
 
 function FourSquareAPI(place){
-    var client_id = "GJXKB1TLL4RNYI2R3WMTGCGNZR2XYJDD3H4R2TAAMCER3S43";
-    var client_secret = "Q4TNZRLJYH5CKCZIUWUNH5XYK0UUG3WLRRQXWCK2JF5SDMRL";
+    var client_id = credentials.client_id;
+    var client_secret = credentials.client_secret;
 
     var date = new Date();
 
